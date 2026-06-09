@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <meta name="description" content="Conversor de concentraciones % a gramos - MediShort360" />
+  <title>MediShort360 · Conversor %→g</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icono-192.png" />
+  <link rel="apple-touch-icon" href="icono-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-nav">
+      <button class="nav-pill active" onclick="showSection('calculadora')">MEDISHORT360</button>
+      <button class="nav-pill" onclick="showSection('ejemplos')">Ejemplos</button>
+      <button class="nav-pill" onclick="showSection('manual')">Manual</button>
+    </div>
+
+    <div class="logo-wrap">
+      <img src="icono-512.png" alt="MediShort360 Logo" class="logo-float" />
+    </div>
+
+    <h1 class="app-title">Conversor %→g</h1>
+    <p class="app-subtitle">Convierte concentraciones (%) a gramos en un volumen dado</p>
+    <p class="app-canal">📺 Canal MEDISHORT360</p>
+
+    <div id="installBanner" class="install-banner hidden">
+      <span>📲 Instala la app para usarla sin internet</span>
+      <button id="installBtn" class="install-btn">Instalar</button>
+    </div>
+  </header>
+
+  <!-- ============ SECCIÓN CALCULADORA ============ -->
+  <main id="sec-calculadora" class="section active">
+
+    <!-- TARJETAS RÁPIDAS -->
+    <div class="card">
+      <div class="card-label">⚡ ACCESO RÁPIDO — MEDICAMENTOS FRECUENTES</div>
+      <div class="quick-grid">
+        <button class="quick-card" onclick="cargarMed('Sulfato de Magnesio', 20, 10)">
+          <span class="qc-name">Sulfato de Magnesio</span>
+          <span class="qc-conc">20%</span>
+          <span class="qc-vol">10 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Gluconato de Calcio', 10, 10)">
+          <span class="qc-name">Gluconato de Calcio</span>
+          <span class="qc-conc">10%</span>
+          <span class="qc-vol">10 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Bicarbonato de Sodio', 8.4, 10)">
+          <span class="qc-name">Bicarbonato de Sodio</span>
+          <span class="qc-conc">8.4%</span>
+          <span class="qc-vol">10 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Cloruro de Sodio', 20, 10)">
+          <span class="qc-name">Cloruro de Sodio</span>
+          <span class="qc-conc">20%</span>
+          <span class="qc-vol">10 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Cloruro de Potasio', 20, 10)">
+          <span class="qc-name">Cloruro de Potasio</span>
+          <span class="qc-conc">20%</span>
+          <span class="qc-vol">10 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Cloruro de Sodio 0.9%', 0.9, 1000)">
+          <span class="qc-name">Cloruro de Sodio</span>
+          <span class="qc-conc">0.9%</span>
+          <span class="qc-vol">1000 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Dextrosa', 5, 1000)">
+          <span class="qc-name">Dextrosa</span>
+          <span class="qc-conc">5%</span>
+          <span class="qc-vol">1000 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Dextrosa', 10, 1000)">
+          <span class="qc-name">Dextrosa</span>
+          <span class="qc-conc">10%</span>
+          <span class="qc-vol">1000 mL</span>
+        </button>
+        <button class="quick-card" onclick="cargarMed('Dextrosa', 50, 500)">
+          <span class="qc-name">Dextrosa</span>
+          <span class="qc-conc">50%</span>
+          <span class="qc-vol">500 mL</span>
+        </button>
+        <button class="quick-card epinefrina" onclick="cargarMed('Epinefrina Racémica', 2.25, 0.5)">
+          <span class="qc-name">Epinefrina Racémica</span>
+          <span class="qc-conc">2.25%</span>
+          <span class="qc-vol">0.5 mL</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ENTRADA MANUAL -->
+    <div class="card">
+      <div class="card-label">📋 INGRESAR MEDICAMENTO</div>
+
+      <div class="field-group">
+        <label class="field-label">NOMBRE DEL MEDICAMENTO (OPCIONAL)</label>
+        <input type="text" id="inputNombre" class="field-input" placeholder="Ej: Gluconato de Calcio, Dextrosa..." />
+      </div>
+
+      <div class="field-row">
+        <div class="field-group half">
+          <label class="field-label">CONCENTRACIÓN (%)</label>
+          <div class="input-with-unit">
+            <input type="number" id="inputConc" class="field-input" placeholder="Ej: 10" step="any" min="0" max="100" />
+            <span class="unit-badge">%</span>
+          </div>
+        </div>
+        <div class="field-group half">
+          <label class="field-label">VOLUMEN (mL)</label>
+          <div class="input-with-unit">
+            <input type="number" id="inputVol" class="field-input" placeholder="Ej: 10" step="any" min="0" />
+            <span class="unit-badge">mL</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-calcular" onclick="calcular()">
+        ⚗️ CALCULAR
+      </button>
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="resultado" class="card resultado-card hidden">
+
+      <div class="res-header">
+        <span class="res-med-name" id="resNombre">—</span>
+        <span class="res-badge" id="resConc">—%</span>
+        <span class="res-badge cyan" id="resVol">— mL</span>
+      </div>
+
+      <!-- PASO A PASO -->
+      <div class="paso-card">
+        <div class="paso-title">📐 CONVERSIÓN PASO A PASO</div>
+        <div class="paso-body" id="pasoAPaso"></div>
+      </div>
+
+      <!-- RESULTADO FINAL -->
+      <div class="res-final">
+        <div class="res-label">RESULTADO FINAL</div>
+        <div class="res-big" id="resBig">—</div>
+        <div class="res-grid">
+          <div class="res-item">
+            <span class="ri-label">mg/mL</span>
+            <span class="ri-val" id="resMgMl">—</span>
+          </div>
+          <div class="res-item">
+            <span class="ri-label">mg totales</span>
+            <span class="ri-val" id="resMgTotal">—</span>
+          </div>
+          <div class="res-item">
+            <span class="ri-label">g totales</span>
+            <span class="ri-val" id="resGTotal">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARRA VISUAL -->
+      <div class="barra-wrap">
+        <div class="barra-track">
+          <div class="barra-fill" id="barraFill"></div>
+        </div>
+        <div class="barra-labels">
+          <span>0%</span>
+          <span id="barraLabel">—</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- AVISO DE SEGURIDAD -->
+    <div class="aviso-card">
+      <div class="aviso-icon">⚠️</div>
+      <div class="aviso-text">
+        <strong>Herramienta educativa.</strong> Siempre verificar la prescripción médica, protocolos institucionales y presentación comercial antes de administrar medicamentos.
+      </div>
+    </div>
+
+    <div class="nota-final">
+      <strong>Importante:</strong> el contenido total depende de los mL de la presentación.
+    </div>
+
+  </main>
+
+  <!-- ============ SECCIÓN EJEMPLOS ============ -->
+  <main id="sec-ejemplos" class="section hidden">
+    <div class="card">
+      <div class="card-label">📚 EJEMPLOS PRECARGADOS</div>
+      <p class="card-desc">Toca cualquier ejemplo para verlo calculado paso a paso.</p>
+    </div>
+
+    <div id="ejemplosGrid" class="ejemplos-lista"></div>
+
+    <div class="aviso-card">
+      <div class="aviso-icon">⚠️</div>
+      <div class="aviso-text">
+        <strong>Herramienta educativa.</strong> Siempre verificar la prescripción médica, protocolos institucionales y presentación comercial antes de administrar medicamentos.
+      </div>
+    </div>
+    <div class="nota-final">
+      <strong>Importante:</strong> el contenido total depende de los mL de la presentación.
+    </div>
+  </main>
+
+  <!-- ============ SECCIÓN MANUAL ============ -->
+  <main id="sec-manual" class="section hidden">
+    <div class="card">
+      <div class="card-label">📖 ¿CÓMO USAR ESTA APP?</div>
+
+      <div class="manual-step">
+        <div class="ms-num">1</div>
+        <div class="ms-body">
+          <strong>Selecciona un medicamento rápido</strong> tocando una de las tarjetas de acceso rápido, o ingresa los datos manualmente.
+        </div>
+      </div>
+      <div class="manual-step">
+        <div class="ms-num">2</div>
+        <div class="ms-body">
+          <strong>Ingresa la concentración en %</strong> y el volumen en mL de la presentación que tienes disponible.
+        </div>
+      </div>
+      <div class="manual-step">
+        <div class="ms-num">3</div>
+        <div class="ms-body">
+          <strong>Presiona CALCULAR</strong> para obtener el desglose completo con el procedimiento paso a paso.
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">🔢 FÓRMULA BASE</div>
+        <div class="formula-line"><span class="mono">X% = X g / 100 mL</span></div>
+        <div class="formula-line"><span class="mono">mg/mL = (% × 1000) ÷ 100</span></div>
+        <div class="formula-line"><span class="mono">mg totales = mg/mL × Vol(mL)</span></div>
+        <div class="formula-line"><span class="mono">g totales = mg totales ÷ 1000</span></div>
+      </div>
+
+      <div class="formula-box ejemplo-box">
+        <div class="formula-title">💡 EJEMPLO — Gluconato de Calcio 10% / 10 mL</div>
+        <div class="formula-line">10% = 10 g en 100 mL</div>
+        <div class="formula-line">10 g ÷ 100 mL = <span class="cyan">100 mg/mL</span></div>
+        <div class="formula-line">100 mg/mL × 10 mL = <span class="cyan">1000 mg</span></div>
+        <div class="formula-line res-line">✅ Contiene <strong>1 g</strong> en 10 mL</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">ℹ️ ACERCA DE</div>
+      <p class="about-text">
+        <strong>MediShort360 · Conversor %→g</strong><br/>
+        Herramienta educativa para estudiantes y profesionales de enfermería.<br/><br/>
+        Diseñada para aprender a interpretar presentaciones farmacológicas expresadas en porcentaje.
+      </p>
+      <p class="about-canal">📺 <strong>Canal MEDISHORT360</strong> · Canal Médico Educativo</p>
+    </div>
+
+    <div class="aviso-card">
+      <div class="aviso-icon">⚠️</div>
+      <div class="aviso-text">
+        <strong>Herramienta educativa.</strong> Siempre verificar la prescripción médica, protocolos institucionales y presentación comercial antes de administrar medicamentos.
+      </div>
+    </div>
+    <div class="nota-final">
+      <strong>Importante:</strong> el contenido total depende de los mL de la presentación.
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <span>🩺 MEDISHORT360 · Canal Médico Educativo</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
