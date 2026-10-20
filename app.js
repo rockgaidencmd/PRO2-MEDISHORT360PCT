@@ -24,7 +24,7 @@ function showSection(id) {
   document.getElementById('sec-' + id).classList.remove('hidden');
 
   const pills = document.querySelectorAll('.nav-pill');
-  const map = { calculadora: 0, dosis: 1, ejemplos: 2, manual: 3 };
+  const map = { aprende: 0, calculadora: 1, dosis: 2, ejemplos: 3, manual: 4 };
   if (map[id] !== undefined) pills[map[id]].classList.add('active');
 
   if (id === 'ejemplos') renderEjemplos();
@@ -336,34 +336,4 @@ function formatNum(n) {
   return str;
 }
 
-// ——— PWA Install ———
-let deferredPrompt = null;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installBanner').classList.remove('hidden');
-});
-
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  if (outcome === 'accepted') {
-    document.getElementById('installBanner').classList.add('hidden');
-  }
-  deferredPrompt = null;
-});
-
-window.addEventListener('appinstalled', () => {
-  document.getElementById('installBanner').classList.add('hidden');
-});
-
-// ——— Service Worker ———
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('SW registrado:', reg.scope))
-      .catch(err => console.log('SW error:', err));
-  });
-}
+// ——— Service Worker gestionado por la app maestra MS360 ———
