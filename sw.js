@@ -1,75 +1,21 @@
-// ===== sw.js · MediShort360 · Service Worker v3 =====
-const CACHE_NAME = 'medishort360-v3';
-
-const PRECACHE_URLS = [
-  './',
-  './index.html',
-  './app.js',
-  './activacion.js',
-  './style.css',
-  './manifest.json',
-  './icono-192.png',
-  './icono-512.png',
-];
-
-// Dominios que NUNCA se interceptan (Firebase + Google APIs)
-const BYPASS_ORIGINS = [
-  'firestore.googleapis.com',
-  'firebase.googleapis.com',
-  'identitytoolkit.googleapis.com',
-  'securetoken.googleapis.com',
-  'www.gstatic.com',
-  'fonts.googleapis.com',
-  'fonts.gstatic.com',
-];
-
-// ——— Install: pre-cachear recursos locales ———
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
-  );
-  self.skipWaiting();
+/* MEDISHORTS 360 FREE — Service Worker propio, sin activación */
+const CACHE_NAME = 'ms360-free-porcentaje-20261020-v1';
+const ASSETS = ["./","./index.html","./app.js","./style.css","./manifest.json","./install-free.js","icono-192.png","icono-512.png"];
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
-
-// ——— Activate: limpiar caches viejos ———
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('ms360-free-porcentaje-') && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim()));
 });
-
-// ——— Fetch: estrategia network-first ———
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-
-  // Nunca interceptar Firebase ni Google APIs
-  if (BYPASS_ORIGINS.some((origin) => url.hostname.includes(origin))) {
-    return; // deja pasar al navegador directamente
-  }
-
-  // Solo interceptar GET
+self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        // Guardar copia fresca en cache
-        const clone = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        return networkResponse;
-      })
-      .catch(() => {
-        // Sin red → servir desde cache
-        return caches.match(event.request).then(
-          (cached) => cached || new Response('Sin conexión', { status: 503 })
-        );
-      })
-  );
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || !url.pathname.startsWith(new URL(self.registration.scope).pathname)) return;
+  event.respondWith(fetch(event.request).then(response => {
+    if (response.ok) {
+      const copy = response.clone();
+      event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)));
+    }
+    return response;
+  }).catch(() => caches.match(event.request).then(cached => cached || new Response('Sin conexión', {status:503}))));
 });
