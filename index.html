@@ -230,24 +230,18 @@
     .quick-card.propofol .qc-conc { color: #a78bfa; }
     .quick-card.propofol { border-color: rgba(167,139,250,0.25); }
   </style>
-
 </head>
 <body>
-
-  <!-- ═══════════════════════════════════════════════════
-       PANTALLA DE ACTIVACIÓN
-  ════════════════════════════════════════════════════ -->
-  <!-- FREE: activation overlay removed; core application unchanged -->
-  </div>
 
   <!-- ══════════════ APP ══════════════ -->
 
   <!-- HEADER -->
   <header class="app-header">
     <div class="header-nav">
-      <button class="nav-pill active" onclick="showSection('calculadora')">MEDISHORT360</button>
+      <button class="nav-pill active" onclick="showSection('aprende')">📘 Aprende</button>
+      <button class="nav-pill" onclick="showSection('calculadora')">🧮 Calcula</button>
       <button class="nav-pill" onclick="showSection('dosis'); initDosisSection()">Dosis</button>
-      <button class="nav-pill" onclick="showSection('ejemplos')">Ejemplos</button>
+      <button class="nav-pill" onclick="showSection('ejemplos')">✏️ Practica</button>
       <button class="nav-pill" onclick="showSection('manual')">Manual</button>
     </div>
 
@@ -259,14 +253,56 @@
     <p class="app-subtitle">Convierte concentraciones (%) a gramos en un volumen dado</p>
     <p class="app-canal">📺 Canal MEDISHORT360</p>
 
-    <div id="installBanner" class="install-banner hidden">
-      <span>📲 Instala la app para usarla sin internet</span>
-      <button id="installBtn" class="install-btn">Instalar</button>
-    </div>
   </header>
 
   <!-- ============ SECCIÓN CALCULADORA ============ -->
-  <main id="sec-calculadora" class="section active">
+  <!-- ============ SECCIÓN APRENDE (mini-clase) ============ -->
+  <main id="sec-aprende" class="section active">
+
+    <div class="card">
+      <div class="card-label">📘 MINI-CLASE — CONVERSIÓN DE PORCENTAJE</div>
+      <p class="card-desc">Aprende a convertir la concentración en % de una solución a miligramos y gramos. Lee el ejemplo y luego practica en un entorno seguro.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">1️⃣ ¿QUÉ SIGNIFICA EL PORCENTAJE?</div>
+      <div class="formula-line">El porcentaje (%) de una solución indica cuántos <strong>gramos</strong> de soluto hay en <strong>100 mL</strong> de solución.</div>
+      <div class="formula-line" style="margin-top:8px"><span class="mono">Una solución al 20% = 20 g en 100 mL</span></div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">2️⃣ LA FÓRMULA, PASO A PASO</div>
+      <div class="formula-line"><span class="mono">mg/mL = (% × 1000) ÷ 100</span></div>
+      <div class="formula-line"><span class="mono">mg totales = mg/mL × volumen (mL)</span></div>
+      <div class="formula-line"><span class="mono">g totales = mg totales ÷ 1000</span></div>
+    </div>
+
+    <div class="formula-box ejemplo-box">
+      <div class="formula-title">3️⃣ EJEMPLO RESUELTO — Sulfato de Magnesio 20% en 10 mL</div>
+      <div class="formula-line"><strong>Paso 1.</strong> 20% significa 20 g por cada 100 mL.</div>
+      <div class="formula-line"><strong>Paso 2.</strong> Convertimos a mg/mL:<br/><span class="mono">(20 × 1000) ÷ 100 = <span class="cyan">200 mg/mL</span></span></div>
+      <div class="formula-line"><strong>Paso 3.</strong> Multiplicamos por el volumen:<br/><span class="mono">200 mg/mL × 10 mL = <span class="cyan">2000 mg</span></span></div>
+      <div class="formula-line"><strong>Paso 4.</strong> Pasamos a gramos:<br/><span class="mono">2000 mg ÷ 1000 = <span class="cyan">2 g</span></span></div>
+      <div class="formula-line res-line">✅ Una ampolla de Sulfato de Magnesio 20% de 10 mL contiene <strong>2 g</strong>.</div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">💡 PARA RECORDAR</div>
+      <div class="formula-line">El total siempre depende del <strong>volumen real</strong> de la presentación que tienes. Una misma concentración (%) da distinta cantidad total según los mL.</div>
+    </div>
+
+    <div class="aviso-card">
+      <div class="aviso-icon">⚠️</div>
+      <div class="aviso-text">
+        <strong>Herramienta educativa.</strong> Este contenido es para aprendizaje y práctica. Verifica siempre la prescripción, los protocolos de tu institución y la presentación comercial antes de cualquier administración real. Consulta a un profesional de la salud para decisiones clínicas.
+      </div>
+    </div>
+
+    <button class="btn-calc" onclick="showSection('ejemplos')" style="margin-top:4px">✏️ Ahora practica con ejercicios →</button>
+
+  </main>
+
+  <main id="sec-calculadora" class="section hidden">
 
     <div class="card">
       <div class="card-label">⚡ ACCESO RÁPIDO — MEDICAMENTOS FRECUENTES</div>
@@ -609,7 +645,6 @@
 
   <!-- Scripts -->
   <script src="app.js"></script>
-  
 
 </body>
 </html>
